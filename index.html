@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Riad – Gebäudetechnikplaner Sanitär EFZ</title>
+<link rel="stylesheet" href="styles.css"></head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">R</div><div><h1>Riad · Sanitär EFZ</h1><small>2026–2030 · Lern-App</small></div></div>
+  <div class="nav">
+    <button class="active" data-page="dashboard">Übersicht</button>
+    <button data-page="semester">Semester 1–8</button>
+    <button data-page="aufgaben">Aufgaben & Lösungen</button>
+    <button data-page="mathe">Mathematik</button>
+    <button data-page="videos">Videos</button>
+    <button data-page="quellen">Schuldossiers & Quellen</button>
+  </div>
+</aside>
+<main class="main">
+<section class="page active" id="dashboard">
+  <div class="topbar"><div><h2>Übersicht</h2><div class="sub">Persönliche Lernplattform · Fortschritt wird lokal auf diesem Gerät gespeichert.</div></div><span class="pill">Version <span id="appVersion">0.1</span></span></div>
+  <div class="grid cards">
+    <div class="card"><div class="label">Bearbeitet</div><div class="metric" id="mAttempt">0</div></div>
+    <div class="card"><div class="label">Richtig</div><div class="metric" id="mCorrect">0</div></div>
+    <div class="card"><div class="label">Noch üben</div><div class="metric" id="mWrong">0</div></div>
+    <div class="card"><div class="label">Mathe-Kapitel gelernt</div><div class="metric" id="mChapters">0</div></div>
+  </div>
+  <div class="card mt"><div class="row" style="justify-content:space-between"><strong>Aufgabenfortschritt</strong><span id="overallPct">0%</span></div><div class="progress"><div id="overallBar"></div></div></div>
+  <div class="notice mt"><strong>Arbeitsprinzip:</strong> Zuerst selbst lösen. Danach auf <b>Prüfen</b> bzw. <b>Richtig/Falsch</b> klicken. Der Button <b>Lösung</b> bleibt jederzeit verfügbar. Bei Zeichnungsaufgaben dient die Musterlösung als Selbstkontrolle.</div>
+  <div class="grid cards">
+    <div class="card"><div class="label">Aktueller Schwerpunkt</div><h3>Semester 1</h3><p class="sub">Mathematik, Planbearbeitung, Technisches Zeichnen, Planlesen und bauliche Grundlagen.</p><button class="btn primary" onclick="nav('aufgaben')">Weiterlernen</button></div>
+    <div class="card"><div class="label">Quellen</div><h3>Schuldossiers direkt eingebaut</h3><p class="sub">Mathematik, MOXIE Planbearbeitung, «Unser Haus» und offizielle Ausbildungsgrundlagen.</p><button class="btn" onclick="nav('quellen')">Quellen ansehen</button></div>
+  </div>
+</section>
+
+<section class="page" id="semester"><div class="topbar"><div><h2>Semester 1–8</h2><div class="sub">Struktur nach der neuen Ausbildung ab 2025; vorhandene Schuldossiers sind aktuell vor allem Semester 1.</div></div></div><div id="semesterGrid" class="semesters"></div></section>
+
+<section class="page" id="aufgaben">
+  <div class="topbar"><div><h2>Aufgaben & Lösungen</h2><div class="sub">Antwort eingeben → prüfen → Lösung bei Bedarf anzeigen.</div></div><input class="search" id="searchInput" placeholder="Aufgabe oder Thema suchen…"></div>
+  <div id="exerciseFilters" class="filters"></div><div id="exerciseList"></div>
+</section>
+
+<section class="page" id="mathe">
+  <div class="topbar"><div><h2>Mathematik</h2><div class="sub">Das 2007er suissetec-Lehrmittel wird aktuell in der Schule verwendet. Im Schuldossier sind eigene Lösungsseiten enthalten.</div></div></div>
+  <div class="notice"><strong>Gefundene Lösungsbereiche:</strong> Arithmetik/Algebra in den PDF-Seiten 134–140; Geometrie/Trigonometrie in den PDF-Seiten 215–217. Öffne zuerst das Kapitel und erst nach dem eigenen Versuch die Lösungen.</div>
+  <div id="mathChapters" class="chapter-list"></div>
+</section>
+
+<section class="page" id="videos">
+  <div class="topbar"><div><h2>Videos</h2><div class="sub">QR-Codes aus den Schuldossiers werden hier als direkt nutzbare Lernvideos eingebettet.</div></div></div>
+  <div id="videoGrid"></div>
+</section>
+
+<section class="page" id="quellen">
+  <div class="topbar"><div><h2>Schuldossiers & Quellen</h2><div class="sub">Originale direkt in der App öffnen. Die PDFs bleiben unverändert.</div></div></div>
+  <div id="sourceGrid" class="source-grid"></div>
+</section>
+
+<div class="footer">Private Lern-App für Riad · Gebäudetechnikplaner Sanitär EFZ 2026–2030 · Stand 22.09.2026</div>
+</main>
+</div>
+<div class="modal" id="pdfModal"><div class="modal-box"><div class="modal-head"><strong id="pdfTitle">Quelle</strong><button class="btn" id="pdfClose">Schliessen</button></div><iframe id="pdfFrame" title="PDF"></iframe></div></div>
+<script src="data.js"></script><script src="app.js"></script>
+</body></html>
