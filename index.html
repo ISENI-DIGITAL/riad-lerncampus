@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="de">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gebäudetechnikplaner Sanitär EFZ 2026–2030 Lern-App</title>
+<link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="interactive.css"></head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">R</div><div><h1>Gebäudetechnikplaner Sanitär EFZ</h1><small>2026–2030 · Lern-App</small></div></div>
+  <div class="nav">
+    <button class="active" data-page="dashboard">Übersicht</button>
+    <button data-page="semester">Semester 1–8</button>
+    <button data-page="interaktiv">Interaktiv lernen</button>
+    <button data-page="aufgaben">Aufgaben & Lösungen</button>
+    <button data-page="mathe">Mathematik</button>
+    <button data-page="videos">Videos</button>
+    <button data-page="quellen">Schuldossiers & Quellen</button>
+  </div>
+</aside>
+<main class="main">
+<section class="page active" id="dashboard">
+  <div class="topbar"><div><h2>Übersicht</h2><div class="sub">Persönliche Lernplattform · Fortschritt wird lokal auf diesem Gerät gespeichert.</div></div><span class="pill">Version <span id="appVersion">0.2 · Prototyp</span></span></div>
+  <div class="grid cards">
+    <div class="card"><div class="label">Bearbeitet</div><div class="metric" id="mAttempt">0</div></div>
+    <div class="card"><div class="label">Richtig</div><div class="metric" id="mCorrect">0</div></div>
+    <div class="card"><div class="label">Noch üben</div><div class="metric" id="mWrong">0</div></div>
+    <div class="card"><div class="label">Mathe-Kapitel gelernt</div><div class="metric" id="mChapters">0</div></div>
+  </div>
+  <div class="card mt"><div class="row" style="justify-content:space-between"><strong>Aufgabenfortschritt</strong><span id="overallPct">0%</span></div><div class="progress"><div id="overallBar"></div></div></div>
+  <div class="notice mt"><strong>Arbeitsprinzip:</strong> Zuerst selbst lösen. Danach auf <b>Prüfen</b> bzw. <b>Richtig/Falsch</b> klicken. Der Button <b>Lösung</b> bleibt jederzeit verfügbar. Bei Zeichnungsaufgaben dient die Musterlösung als Selbstkontrolle.</div>
+  <div class="grid cards">
+    <div class="card"><div class="label">Aktueller Schwerpunkt</div><h3>Semester 1</h3><p class="sub">Mathematik, Planbearbeitung, Technisches Zeichnen, Planlesen und bauliche Grundlagen.</p><button class="btn primary" onclick="nav('aufgaben')">Weiterlernen</button></div>
+    <div class="card"><div class="label">Quellen</div><h3>Schuldossiers direkt eingebaut</h3><p class="sub">Mathematik, MOXIE Planbearbeitung, «Unser Haus» und offizielle Ausbildungsgrundlagen.</p><button class="btn" onclick="nav('quellen')">Quellen ansehen</button></div>
+    <div class="card"><div class="label">NEU · INTERAKTIV</div><h3>PE-Rohre stumpfschweissen</h3><p class="sub">Technischen Ablauf starten, Schritt für Schritt steuern, Bauteile antippen und danach Wissen prüfen.</p><button class="btn primary" onclick="nav('interaktiv')">Modul öffnen</button></div>
+  </div>
+</section>
+
+<section class="page" id="semester"><div class="topbar"><div><h2>Semester 1–8</h2><div class="sub">Struktur nach der neuen Ausbildung ab 2025; vorhandene Schuldossiers sind aktuell vor allem Semester 1.</div></div></div><div id="semesterGrid" class="semesters"></div></section>
+
+
+<section class="page" id="interaktiv">
+  <div class="topbar">
+    <div><h2>Interaktiv lernen</h2><div class="sub">Technische Vorgänge sehen, selbst steuern und direkt danach prüfen.</div></div>
+    <span class="pill">Prototyp · PE-Rohre</span>
+  </div>
+
+  <div class="notice"><strong>PE-Rohre stumpfschweissen:</strong> Die Zeitmarken unten steuern nur die 10-Sekunden-Lernanimation. Reale Heiz-, Umstell-, Füge- und Abkühlzeiten sowie Fügedrücke müssen immer nach dem verwendeten Rohr-/Schweisssystem und den gültigen Vorgaben bestimmt werden.</div>
+
+  <div class="interactive-layout">
+    <div class="card interactive-stage-card">
+      <div class="interactive-stage" id="peStage">
+        <video id="peVideo" playsinline preload="metadata" poster="assets/videos/pe_rohr_stumpfschweissen_poster.jpg">
+          <source src="assets/videos/pe_rohr_stumpfschweissen.mp4" type="video/mp4">
+        </video>
+        <button class="hotspot hs-left" data-hotspot="left" aria-label="Linkes PE-Rohr"><span></span></button>
+        <button class="hotspot hs-center" data-hotspot="center" aria-label="Arbeitsbereich"><span></span></button>
+        <button class="hotspot hs-right" data-hotspot="right" aria-label="Rechtes PE-Rohr"><span></span></button>
+        <div class="hotspot-pop" id="hotspotPop" hidden></div>
+        <div class="step-overlay"><span id="peStepNumber">Schritt 1/5</span><strong id="peStepOverlayTitle">Rohrenden ausrichten</strong></div>
+      </div>
+
+      <div class="pe-controls">
+        <button class="btn" id="peRestart">↺ Neu</button>
+        <button class="btn" id="pePrev">← Zurück</button>
+        <button class="btn primary" id="pePlay">▶ Start</button>
+        <button class="btn" id="peNext">Weiter →</button>
+        <span class="pe-time" id="peTime">0.0 / 10.0 s</span>
+      </div>
+      <input id="peScrubber" class="pe-scrubber" type="range" min="0" max="10" value="0" step="0.05" aria-label="Videoposition">
+
+      <div class="pe-step-tabs" id="peStepTabs"></div>
+    </div>
+
+    <div class="card step-info-card">
+      <div class="label">AKTUELLER ARBEITSSCHRITT</div>
+      <h3 id="peStepTitle">Rohrenden ausrichten</h3>
+      <p id="peStepText" class="step-copy"></p>
+      <div class="step-keypoints" id="peKeypoints"></div>
+      <div class="row mt">
+        <button class="btn" id="crossToggle">Querschnitt einblenden</button>
+        <button class="btn" id="showHotspots">Bauteile anzeigen</button>
+      </div>
+      <div class="cross-section" id="crossSection" hidden>
+        <div class="cross-title">Prinzipdarstellung des Fügebereichs</div>
+        <div class="cross-diagram" id="crossDiagram">
+          <div class="pipe-cut left"><span>PE</span></div>
+          <div class="fusion-zone" id="fusionZone"></div>
+          <div class="pipe-cut right"><span>PE</span></div>
+        </div>
+        <p id="crossText">Die Rohrenden sind vor dem Fügen noch getrennt.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt sequence-card">
+    <div class="label">SELBST AKTIV WERDEN</div>
+    <h3>Arbeitsschritte in die richtige Reihenfolge bringen</h3>
+    <p class="sub">Tippe die Schritte in der Reihenfolge an, in der sie beim Ablauf vorkommen.</p>
+    <div class="sequence-bank" id="sequenceBank"></div>
+    <div class="sequence-answer" id="sequenceAnswer"><span>Noch keine Auswahl</span></div>
+    <div class="row mt"><button class="btn primary" id="sequenceCheck">Reihenfolge prüfen</button><button class="btn" id="sequenceReset">Zurücksetzen</button></div>
+    <div class="result" id="sequenceResult"></div>
+  </div>
+
+  <div class="card mt quiz-card">
+    <div class="label">WISSEN TESTEN</div>
+    <h3>3 kurze Fragen zum Stumpfschweissen</h3>
+    <div id="peQuiz"></div>
+    <div class="row mt"><button class="btn primary" id="peQuizCheck">Antworten prüfen</button><button class="btn" id="peQuizReset">Neu versuchen</button></div>
+    <div class="result" id="peQuizResult"></div>
+  </div>
+
+  <div class="card mt completion-card" id="peCompletion">
+    <div><div class="label">LERNFORTSCHRITT</div><strong id="peProgressText">0 von 5 Schritten angesehen</strong></div>
+    <div class="progress"><div id="peProgressBar" style="width:0%"></div></div>
+  </div>
+</section>
+
+<section class="page" id="aufgaben">
+  <div class="topbar"><div><h2>Aufgaben & Lösungen</h2><div class="sub">Antwort eingeben → prüfen → Lösung bei Bedarf anzeigen.</div></div><input class="search" id="searchInput" placeholder="Aufgabe oder Thema suchen…"></div>
+  <div id="exerciseFilters" class="filters"></div><div id="exerciseList"></div>
+</section>
+
+<section class="page" id="mathe">
+  <div class="topbar"><div><h2>Mathematik</h2><div class="sub">Das 2007er suissetec-Lehrmittel wird aktuell in der Schule verwendet. Im Schuldossier sind eigene Lösungsseiten enthalten.</div></div></div>
+  <div class="notice"><strong>Gefundene Lösungsbereiche:</strong> Arithmetik/Algebra in den PDF-Seiten 134–140; Geometrie/Trigonometrie in den PDF-Seiten 215–217. Öffne zuerst das Kapitel und erst nach dem eigenen Versuch die Lösungen.</div>
+  <div id="mathChapters" class="chapter-list"></div>
+</section>
+
+<section class="page" id="videos">
+  <div class="topbar"><div><h2>Videos</h2><div class="sub">QR-Codes aus den Schuldossiers werden hier als direkt nutzbare Lernvideos eingebettet.</div></div></div>
+  <div id="videoGrid"></div>
+</section>
+
+<section class="page" id="quellen">
+  <div class="topbar"><div><h2>Schuldossiers & Quellen</h2><div class="sub">Originale direkt in der App öffnen. Die PDFs bleiben unverändert.</div></div></div>
+  <div id="sourceGrid" class="source-grid"></div>
+</section>
+
+<div class="footer">Gebäudetechnikplaner Sanitär EFZ 2026–2030 Lern-App · Interaktiv-Prototyp · Stand 25.09.2026</div>
+</main>
+</div>
+<div class="modal" id="pdfModal"><div class="modal-box"><div class="modal-head"><strong id="pdfTitle">Quelle</strong><button class="btn" id="pdfClose">Schliessen</button></div><iframe id="pdfFrame" title="PDF"></iframe></div></div>
+<script src="data.js"></script><script src="app.js"></script><script src="interactive.js"></script>
+</body></html>
